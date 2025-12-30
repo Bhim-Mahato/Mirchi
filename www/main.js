@@ -28,14 +28,17 @@ $(document).ready(function () {
 
     // Mic button click event
     $("#MicBtn").on("click", function () {
-        //for sound
-        //call function main.js
-        eel.playAssistantSound()
 
+        // play assistant sound (Python)
+        eel.playAssistantSound();
 
-        //for click oval->siriwave
+        // UI animation
         $("#oval").hide();
         $("#SiriWave").show();
-    });
+
+        // call Python function using eel
+        eel.allCommands();   // ✅ correct
+});
+
 
 });
