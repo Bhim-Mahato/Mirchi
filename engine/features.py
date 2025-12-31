@@ -1,4 +1,9 @@
+import struct
+import time
 from playsound import playsound
+import pvporcupine
+import pyaudio
+import pyautogui
 from engine.command import speak
 import eel
 from engine.config import ASSISTANT_NAME
@@ -7,6 +12,8 @@ import pywhatkit as kit
 import re
 from engine.db import cursor
 import webbrowser
+
+from engine.helper import extract_yt_term
 
 
 
@@ -74,3 +81,46 @@ def extract_yt_term(command):
     # If a match is found, return the extracted song name; otherwise, return None
     return match.group(1) if match else None
 
+
+
+def hotword():
+    porcupine = None
+    paud = None
+    audio_stream = None  #to stream microphone
+    try:
+        # pre-trained keywords
+        porcupine = pvporcupine.create(keywords=["jarvis", "alexa"])
+        paud = pyaudio.PyAudio()
+        audio_stream = paud.open(
+            rate=porcupine.sample_rate,
+            channels=1,
+            format=pyaudio.paInt16,
+            input=True,
+            frames_per_buffer=porcupine.frame_length
+        )
+
+        # loop for streaming
+        while True:
+            keyword = audio_stream.read(porcupine.frame_length)
+            keyword = struct.unpack_from("h" * porcupine.frame_length, keyword)
+
+            # processing keyword from mic
+            keyword_index = porcupine.process(keyword)
+
+            # checking if keyword is detected
+            if keyword_index >= 0:
+                print("hotword detected")
+
+                # pressing shortcut key win+j
+                pyautogui.keyDown("win")
+                pyautogui.press("j")
+                time.sleep(2)
+                pyautogui.keyUp("win")
+
+    except:
+        if porcupine is not None:
+            porcupine.delete()
+        if audio_stream is not None:
+            audio_stream.close()
+        if paud is not None:
+            paud.terminate()
