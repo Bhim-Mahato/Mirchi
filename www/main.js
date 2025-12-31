@@ -41,4 +41,19 @@ $(document).ready(function () {
 });
 
 
+//add shortcut ket (hot key)
+
+    function doc_keyup(e) {
+    // this would test for whichever key is 40 (down arrow) and the ctrl key at the same time
+
+    if (e.key === 'm' ) {          //on click buttton "m"
+        eel.playAssistantSound()
+        $("#oval").attr("hidden", true);
+        $(".siriWave").attr("hidden", false);
+        eel.allCommands()
+    }
+}
+
+document.addEventListener('keyup', doc_keyup, false);
+
 });

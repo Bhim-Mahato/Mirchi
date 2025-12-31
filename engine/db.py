@@ -16,6 +16,6 @@ query = "CREATE TABLE IF NOT EXISTS web_command(id integer primary key, name VAR
 cursor.execute(query)
 
 # add all application path and name you wanna open -> it will save his name and path im mirchi.db
-# query = "INSERT INTO web_command VALUES (null,'youtube','https://www.youtube.com/');"
+# query = "INSERT INTO web_command VALUES (null,'github','https://github.com//');"
 # cursor.execute(query)
 # conn.commit()

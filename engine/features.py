@@ -5,6 +5,10 @@ from engine.config import ASSISTANT_NAME
 import os
 import pywhatkit as kit
 import re
+from engine.db import cursor
+import webbrowser
+
+
 
 #assistant sound function
 
@@ -18,11 +22,42 @@ def openCommand(query):
     query = query.replace("open", "")
     query = query.lower()
 
-    if query != "":
-        speak("Opening " + query)
-        os.system("start " + query)
-    else:
-        speak("not found")
+    # if query != "":                  
+    #     speak("Opening " + query)
+    #     os.system("start " + query)
+    # else:
+    #     speak("not found")
+
+    app_name=query.strip()
+
+    if app_name != "":
+        try:
+            cursor.execute(
+                "SELECT path FROM sys_command WHERE name IN (?)", (app_name,)
+            )
+            results = cursor.fetchall()
+
+            if len(results) != 0:
+                speak("Opening " + query)
+                os.startfile(results[0][0])
+            else:
+                cursor.execute(
+                    "SELECT url FROM web_command WHERE name IN (?)", (app_name,)
+                )
+                results = cursor.fetchall()
+
+                if len(results) != 0:
+                    speak("Opening " + query)
+                    webbrowser.open(results[0][0])
+                else:
+                    speak("Opening " + query)
+                    try:
+                        os.system('start ' + query)
+                    except:
+                        speak("not found")
+        except:
+            speak("something went wrong")
+
         
 #play any thin in youtube
 
