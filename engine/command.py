@@ -47,8 +47,8 @@ def speak(text):
         communicate = edge_tts.Communicate(
             text=text,
             voice="en-IN-NeerjaNeural",
-            rate="-30%",
-            volume="-10%"
+            rate="-25%",
+            volume="-5%"
         )
 
         await communicate.save(temp_file)
@@ -62,16 +62,36 @@ def speak(text):
 @eel.expose
 def allCommands():
     try:
-        query=takecommand()
+        query = takecommand()
         print(query)
 
         if "open" in query:
             from engine.features import openCommand
-            openCommand(query) 
+            openCommand(query)
 
-        elif "on youtube":                               #play anything in youtube
+        elif "on youtube" in query:   # play anything on youtube
             from engine.features import PlayYoutube
             PlayYoutube(query)
+
+        elif "send message" in query or "phone call" in query or "video call" in query:
+            from engine.features import findContact, whatsApp
+            message = ""
+            contact_no, name = findContact(query)
+
+            if(contact_no != 0):
+
+                if "send message" in query:
+                    message = 'message'
+                    speak("what message to send")
+                    query = takecommand()
+
+                elif "phone call" in query:
+                    message = 'call'
+
+                else:
+                    message = 'video call'
+
+                whatsApp(contact_no, query, message, name)
 
         else:
             print("not run")
