@@ -39,7 +39,7 @@ def takecommand():
 def speak(text):
     if text == "":
         return 
-
+    
     async def _speak():
         with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
             temp_file = f.name
@@ -52,10 +52,14 @@ def speak(text):
         )
 
         await communicate.save(temp_file)
+        eel.receiverText(text) 
         playsound(temp_file)   # sound off
-        os.remove(temp_file)
+        # os.remove(temp_file)
 
     asyncio.run(_speak())
+
+    
+    
 
 
 # -------- MAIN COMMAND FUNCTION (EXPOSED TO JS) --------
@@ -65,9 +69,12 @@ def allCommands(message=1):
     if message==1:
         query = takecommand()
         print(query)
+        eel.senderText(query)
 
     else:
         query=message
+        eel.senderText(query)
+        
 
     try:
         
