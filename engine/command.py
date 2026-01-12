@@ -37,6 +37,7 @@ def takecommand():
 
 # -------- TEXT TO SPEECH --------
 def speak(text):
+    text=str(text)
     if text == "":
         return 
     
@@ -47,12 +48,12 @@ def speak(text):
         communicate = edge_tts.Communicate(
             text=text,
             voice="en-IN-NeerjaNeural",
-            rate="-25%",
+            rate="-15%",
             volume="-5%"
         )
 
         await communicate.save(temp_file)
-        eel.receiverText(text) 
+        eel.receiverText(text)
         playsound(temp_file)   # sound off
         # os.remove(temp_file)
 
@@ -108,7 +109,8 @@ def allCommands(message=1):
                 whatsApp(contact_no, query, message, name)
 
         else:
-            print("not run")
+            from engine.features import chatBot
+            chatBot(query)
 
     except:
         print("error")

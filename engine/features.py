@@ -14,6 +14,8 @@ import webbrowser
 
 from engine.helper import remove_words
 
+from hugchat import hugchat
+
 
 
 #assistant sound function
@@ -141,3 +143,16 @@ def whatsApp(mobile_no, message, flag, name):
 
     pyautogui.hotkey('enter')
     speak(jarvis_message)
+
+# crete a chatbot function
+
+def chatBot(query):
+    user_input = query.lower()
+    chatbot = hugchat.ChatBot(cookie_path="engine/cookies.json")
+    id = chatbot.new_conversation()
+    chatbot.change_conversation(id)
+    response = chatbot.chat(user_input)
+    print(response)
+    speak(response)
+    eel.DisplayMessage(response)
+    return response
