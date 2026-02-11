@@ -1,4 +1,8 @@
+
+
 $(document).ready(function () {
+
+    eel.init()()
 
     var siriWave = new SiriWave({
         container: document.getElementById("siri-container"),
