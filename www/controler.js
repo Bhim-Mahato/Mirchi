@@ -51,7 +51,7 @@ $(document).ready(function () {
         $("#FaceAuth").show();
     }
 
-     // Hide Loader and display Face Auth animation
+    // Hide Loader and display Face Auth animation
     eel.expose(hideLoader)
     function hideLoader() {
 
@@ -77,19 +77,24 @@ $(document).ready(function () {
     }
 
 
-    // Hide Start Page and display blob
     eel.expose(hideStart)
     function hideStart() {
 
+        // Hide Start screen
         $("#Start").attr("hidden", true);
 
-        setTimeout(function () {
-            $("#Oval").addClass("animate__animated animate__zoomIn");
+        // First make Oval visible
+        $("#Oval").attr("hidden", false);
 
-        }, 1000)
+        // Remove previous animation if exists
+        $("#Oval").removeClass("animate__animated animate__zoomIn");
+
+        // Small delay to force reflow (important)
         setTimeout(function () {
-            $("#Oval").attr("hidden", false);
-        }, 1000)
+            $("#Oval")[0].offsetWidth;  // force reflow
+            $("#Oval").addClass("animate__animated animate__zoomIn");
+        }, 100);
     }
+
 
 });
